@@ -104,7 +104,7 @@ namespace NetMQ.zmq.Transports.Tcp
                     }
                 }
 
-                m_handle.ExclusiveAddressUse = false;
+                //m_handle.ExclusiveAddressUse = false;
                 m_handle.Bind(m_address.Address);
                 m_handle.Listen(m_options.Backlog);
 
@@ -122,6 +122,7 @@ namespace NetMQ.zmq.Transports.Tcp
         private void Accept()
         {
             m_acceptedSocket = AsyncSocket.Create(m_address.Address.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            m_acceptedSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
             // start accepting socket async
             m_handle.Accept(m_acceptedSocket);            
